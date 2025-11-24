@@ -1416,23 +1416,84 @@ variable "default_network_acl_ingress" {
   description = "List of maps of ingress rules to set on the Default Network ACL"
   type        = list(map(string))
   default = [
-    {
-      rule_no    = 100
-      action     = "allow"
-      from_port  = 0
-      to_port    = 0
-      protocol   = "-1"
-      cidr_block = "0.0.0.0/0"
-    },
-    {
-      rule_no         = 101
-      action          = "allow"
-      from_port       = 0
-      to_port         = 0
-      protocol        = "-1"
-      ipv6_cidr_block = "::/0"
-    },
-  ]
+  # Permitir SSH (22) para ranges privados
+  {
+    rule_no    = 100
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 22
+    to_port    = 22
+    cidr_block = "10.0.0.0/8"
+  },
+  {
+    rule_no    = 101
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 22
+    to_port    = 22
+    cidr_block = "192.168.0.0/16"
+  },
+  {
+    rule_no    = 102
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 22
+    to_port    = 22
+    cidr_block = "172.16.0.0/12"
+  },
+
+  # Permitir RDP (3389) para ranges privados
+  {
+    rule_no    = 103
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 3389
+    to_port    = 3389
+    cidr_block = "10.0.0.0/8"
+  },
+  {
+    rule_no    = 104
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 3389
+    to_port    = 3389
+    cidr_block = "192.168.0.0/16"
+  },
+  {
+    rule_no    = 105
+    action     = "allow"
+    protocol   = "tcp"
+    from_port  = 3389
+    to_port    = 3389
+    cidr_block = "172.16.0.0/12"
+  },
+
+  # Bloquear SSH e RDP para qualquer outro IP
+  {
+    rule_no    = 200
+    action     = "deny"
+    protocol   = "tcp"
+    from_port  = 22
+    to_port    = 22
+    cidr_block = "0.0.0.0/0"
+  },
+  {
+    rule_no    = 201
+    action     = "deny"
+    protocol   = "tcp"
+    from_port  = 3389
+    to_port    = 3389
+    cidr_block = "0.0.0.0/0"
+  },
+  {
+    rule_no    = 202
+    action     = "allow"
+    from_port  = 0
+    to_port    = 0
+    protocol   = "-1"
+    cidr_block = "0.0.0.0/0"
+  }
+]
 }
 
 variable "default_network_acl_egress" {
@@ -1447,14 +1508,14 @@ variable "default_network_acl_egress" {
       protocol   = "-1"
       cidr_block = "0.0.0.0/0"
     },
-    {
-      rule_no         = 101
-      action          = "allow"
-      from_port       = 0
-      to_port         = 0
-      protocol        = "-1"
-      ipv6_cidr_block = "::/0"
-    },
+    # {
+    #   rule_no         = 101
+    #   action          = "allow"
+    #   from_port       = 0
+    #   to_port         = 0
+    #   protocol        = "-1"
+    #   ipv6_cidr_block = "::/0"
+    # },
   ]
 }
 
