@@ -131,7 +131,7 @@ variable "tgw_vpc_attachment_tags" {
 variable "create_tgw_routes" {
   description = "Controls if TGW Route Table / Routes should be created"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "transit_gateway_route_table_id" {
@@ -153,7 +153,7 @@ variable "tgw_route_table_tags" {
 variable "share_tgw" {
   description = "Whether to share your transit gateway with other accounts"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ram_name" {
